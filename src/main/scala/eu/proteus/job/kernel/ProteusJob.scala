@@ -26,12 +26,11 @@ import eu.proteus.job.operations.moments.MomentsOperation
 import eu.proteus.solma
 import grizzled.slf4j.Logger
 import org.apache.flink.api.java.utils.ParameterTool
-import org.apache.flink.contrib.streaming.state.{PredefinedOptions, RocksDBStateBackend}
+import org.apache.flink.contrib.streaming.state.RocksDBStateBackend
 import org.apache.flink.runtime.state.memory.MemoryStateBackend
 import org.apache.flink.streaming.api.{CheckpointingMode, TimeCharacteristic}
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer010, FlinkKafkaProducer010}
-import org.apache.flink.streaming.util.serialization.SimpleStringSchema
 
 import scala.collection.mutable
 
@@ -82,7 +81,7 @@ object ProteusJob {
       throw new UnsupportedOperationException
     }
 
-    env.enableCheckpointing(flinkCheckpointsInterval * ONE_MINUTE_IN_MS, CheckpointingMode.AT_LEAST_ONCE)
+    env.enableCheckpointing(flinkCheckpointsInterval * ONE_MINUTE_IN_MS, CheckpointingMode.EXACTLY_ONCE)
 
     val cfg = env.getConfig
 
